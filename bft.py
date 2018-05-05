@@ -29,7 +29,12 @@ def main():
                         type=str, help='filename postfix')
 
     args = parser.parse_args()
-    print(args)
+
+    try:
+        globals()[args.subcommand](args)
+    except KeyError:
+        print('Unrecognized command. Use -h flag to see usage tips.')
+        return
 
 
 def list_files(path, recursion=False):  
