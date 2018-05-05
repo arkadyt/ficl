@@ -20,7 +20,7 @@ def main():
     parser.add_argument('-v', '--verbosity', 
                         action='store_true', help='increase output verbosity')
     parser.add_argument('-r', '--recursively', 
-                        action='store_false', help='include subdirectories')
+                        action='store_true', help='include subdirectories')
     parser.add_argument('-n', '--no-special-files', 
                         action='store_false', help='exclude special files starting with a dot.')
     parser.add_argument('-p', '--prefix', metavar='',
