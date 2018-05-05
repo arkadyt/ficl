@@ -21,6 +21,8 @@ def main():
                         action='store_true', help='increase output verbosity')
     parser.add_argument('-r', '--recursively', 
                         action='store_false', help='include subdirectories')
+    parser.add_argument('-n', '--no-special-files', 
+                        action='store_false', help='exclude special files starting with a dot.')
     parser.add_argument('-p', '--prefix', default='', metavar='',
                         type=str, help='filename prefix')
     parser.add_argument('-t', '--postfix', default='', metavar='',
