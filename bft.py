@@ -50,6 +50,14 @@ def list_files(path, recursion=False):
 
 
 def clean(args):
+    if not os.path.exists(args.path):
+        print('Path does not exist.')
+        return
+    
+    if not os.path.isdir(args.path):
+        print('Path does not point to a directory.')
+        return
+
     filelist = list_files(args.path, args.recursively)
     successfully_cleaned = len(filelist)
 
@@ -76,6 +84,14 @@ def clean(args):
 
 
 def rename(args):
+    if not os.path.exists(args.path):
+        print('Path does not exist.')
+        return
+    
+    if not os.path.isdir(args.path):
+        print('Path does not point to a directory.')
+        return
+
     filelist = list_files(args.path, args.recursively)
     successfully_renamed = len(filelist)
 
