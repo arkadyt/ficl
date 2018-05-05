@@ -23,9 +23,9 @@ def main():
                         action='store_false', help='include subdirectories')
     parser.add_argument('-n', '--no-special-files', 
                         action='store_false', help='exclude special files starting with a dot.')
-    parser.add_argument('-p', '--prefix', default='', metavar='',
+    parser.add_argument('-p', '--prefix', metavar='',
                         type=str, help='filename prefix')
-    parser.add_argument('-t', '--postfix', default='', metavar='',
+    parser.add_argument('-t', '--postfix', metavar='',
                         type=str, help='filename postfix')
 
     args = parser.parse_args()
@@ -65,6 +65,10 @@ def clean(args):
     if args.verbosity:
         print(f'Successfully cleaned out {successfully_cleaned}/{len(filelist)} files.')
 
+    if args.prefix is not None or args.postfix is not None:
+        # User needs to rename files too.
+        rename(args)
+
 
 def rename(args):
     filelist = list_files(args.path, args.recursively)
@@ -79,7 +83,7 @@ def rename(args):
             try:
                 new_name = os.path.join(
                     os.path.split(filepath)[0],
-                    args.prefix + os.path.split(filepath)[1] + args.postfix
+                    args.prefix or '' + os.path.split(filepath)[1] + args.postfix or ''
                 )
                 os.rename(filepath, new_name)
             except PermissionError:
