@@ -28,7 +28,8 @@ def main():
     parser.add_argument('-t', '--postfix', default='', metavar='',
                         type=str, help='filename postfix')
 
-    parser.parse_args()
+    args = parser.parse_args()
+    print(args)
 
 
 def list_files(path, recursion=False):  
@@ -43,8 +44,26 @@ def list_files(path, recursion=False):
     return filelist
 
 
-def clean():
-    pass
+def clean(args):
+    filelist = list_files(args.path, args.recursively)
+    successfully_cleaned = len(filelist)
+
+    for filepath in filelist:
+        if os.path.basename(filepath)[0] == '.' and args.no_special_files:
+            # Stumbled onto special file starting with a dot and --no-special-files flag
+            # was set.
+            successfully_cleaned -= 1
+        else:
+            try:
+                with open(filepath, 'w') as f:
+                    f.write('')
+            except PermissionError:
+                successfully_cleaned -= 1
+                if args.verbosity:
+                    print('Could not clean out {}. Permission denied.'.format(filepath))
+
+    if args.verbosity:
+        print(f'Successfully cleaned out {successfully_cleaned}/{len(filelist)} files.')
 
 
 def rename():
