@@ -66,8 +66,29 @@ def clean(args):
         print(f'Successfully cleaned out {successfully_cleaned}/{len(filelist)} files.')
 
 
-def rename():
-    pass
+def rename(args):
+    filelist = list_files(args.path, args.recursively)
+    successfully_renamed = len(filelist)
+
+    for filepath in filelist:
+        if os.path.basename(filepath)[0] == '.' and args.no_spec_files:
+            # Stumbled onto special file starting with a dot and --no-special-files flag
+            # was set.
+            successfully_renamed -= 1
+        else:
+            try:
+                new_name = os.path.join(
+                    os.path.split(filepath)[0],
+                    args.prefix + os.path.split(filepath)[1] + args.postfix
+                )
+                os.rename(filepath, new_name)
+            except PermissionError:
+                successfully_renamed -= 1
+                if args.verbosity:
+                    print('Could not rename {}. Permission denied.'.format(filepath))
+    
+    if args.verbosity:
+        print(f'Successfully renamed {successfully_renamed}/{len(filelist)} files.')
 
 
 if __name__ == '__main__':
