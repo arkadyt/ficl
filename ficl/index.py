@@ -1,5 +1,5 @@
 from argparse import RawDescriptionHelpFormatter
-from textwrap import dedent
+from textwrap3 import dedent
 
 import argparse
 import os
@@ -11,18 +11,18 @@ def main():
     \tclean              clean files out
     \trename             rename files
     '''.expandtabs(2))
-    parser = argparse.ArgumentParser(prog='bft', description='batch file transformer.', 
+    parser = argparse.ArgumentParser(prog='ficl', description='batch file transformer.', 
         epilog=available_commands, formatter_class=RawDescriptionHelpFormatter)
     
     parser.add_argument('subcommand', type=str, help='subcommand to run')
     parser.add_argument('path', type=str, help='path to target directory')
 
-    parser.add_argument('-v', '--verbosity', 
+    parser.add_argument('-v', '--verbose', 
                         action='store_true', help='increase output verbosity')
     parser.add_argument('-r', '--recursively', 
                         action='store_true', help='include subdirectories')
     parser.add_argument('-n', '--no-special-files', 
-                        action='store_false', help='exclude special files starting with a dot.')
+                        action='store_false', help='exclude files that start with a dot')
     parser.add_argument('-p', '--prefix', metavar='',
                         type=str, help='filename prefix')
     parser.add_argument('-t', '--postfix', metavar='',
